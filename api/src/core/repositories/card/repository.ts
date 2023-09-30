@@ -1,3 +1,5 @@
+import { CardModel } from "../../models/module";
+
 export type Repository = {
-  findMany(): Promise<void>;
+  findMany(ownerId: string): Promise<CardModel.Model[]>;
 };
