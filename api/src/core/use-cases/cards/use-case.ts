@@ -1,21 +1,22 @@
-import { SessionProvider } from "../../providers/module";
-import { CardRepository } from "../../repositories/module";
+import { Models, Providers, Repositories } from "../../core";
+import { isError } from "../../utils/is-error";
 
 export class UseCase {
   constructor(
-    private readonly sessionProvider: SessionProvider.Provider,
-    private readonly cardRepository: CardRepository.Repository
+    private readonly providers: { session: Providers.Session.Provider },
+    private readonly repositories: { card: Repositories.Card.Repository }
   ) {}
 
   async exec(authorization: string, teamId: string) {
-    const currentUser = await this.sessionProvider.findUserByTeamId(
+    let currentUser = await this.providers.session.findUserByTeamId(
       authorization,
       teamId
     );
-    if (currentUser instanceof Error) {
+    if (isError(currentUser)) {
       return new Error(currentUser.message);
     }
-    const ownerId = currentUser.id;
-    return this.cardRepository.findMany(ownerId);
+    let ownerId = currentUser.id;
+    let cards = await this.repositories.card.findMany(ownerId);
+    return cards.filter(Models.Card.isActive);
   }
 }

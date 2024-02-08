@@ -1,3 +1,5 @@
-export type Model = {
-  id: string;
-};
+export module User {
+  export type Model = {
+    id: string;
+  };
+}

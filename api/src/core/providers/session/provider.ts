@@ -1,8 +1,10 @@
-import { UserModel } from "../../models/module";
+import { Models } from "../../core";
 
-export type Provider = {
-  findUserByTeamId(
-    authorization: string,
-    teamId: string
-  ): Promise<UserModel.Model | Error>;
-};
+export module Session {
+  export type Provider = {
+    findUserByTeamId(
+      authorization: string,
+      teamId: string
+    ): Promise<Models.User.Model | Error>;
+  };
+}

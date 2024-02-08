@@ -1,5 +1,8 @@
-import { CardModel } from "../../models/module";
+import { Models } from "../../core";
 
-export type Repository = {
-  findMany(ownerId: string): Promise<CardModel.Model[]>;
-};
+export module Card {
+  export type Repository = {
+    findMany: (ownerId: string) => Promise<Models.Card.Model[]>;
+    findById: (cardId: string) => Promise<Models.Card.Model | Error>;
+  };
+}
